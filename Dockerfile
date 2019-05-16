@@ -1,5 +1,5 @@
 FROM php:7.0-fpm
-RUN apt-get install -y curl apt-transport-https gnupg
+RUN apt update && apt-get install -y curl apt-transport-https gnupg
 RUN curl https://packages.icinga.com/icinga.key | apt-key add -
 RUN printf "deb http://packages.icinga.com/ubuntu icinga-bionic main\n" > \
     /etc/apt/sources.list.d/icinga2.list
