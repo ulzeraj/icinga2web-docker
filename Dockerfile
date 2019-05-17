@@ -1,6 +1,6 @@
 FROM php:7.3-apache-stretch
 RUN apt-get update && apt-get install -y curl apt-transport-https gnupg
-RUN curl https://packages.icinga.com/icinga.key | apt-get-key add -
+RUN curl https://packages.icinga.com/icinga.key | apt-key add -
 RUN printf "deb http://packages.icinga.com/debian icinga-stretch main\n" > \
     /etc/apt-get/sources.list.d/icinga2.list
 RUN printf "deb-src http://packages.icinga.com/debian icinga-stretch main\n" >> \
