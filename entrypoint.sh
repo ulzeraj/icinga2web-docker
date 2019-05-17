@@ -79,7 +79,7 @@ if [ ! -f /etc/icingaweb2/roles.ini ]; then
     printf "
 [admins]
 users               = \"icingaadmin\"
-permissions         = \"*\"\n" > /etc/icingaweb2/authentication.ini
+permissions         = \"*\"\n" > /etc/icingaweb2/roles.ini
 fi 
 
 
