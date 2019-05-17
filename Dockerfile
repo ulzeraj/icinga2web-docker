@@ -1,27 +1,28 @@
 FROM php:7.3-apache-stretch
-RUN apt-get update && apt-get install -y curl apt-transport-https gnupg
-RUN curl https://packages.icinga.com/icinga.key | apt-key add -
-RUN printf "deb http://packages.icinga.com/debian icinga-stretch main\n" > \
-    /etc/apt/sources.list.d/icinga2.list
-RUN printf "deb-src http://packages.icinga.com/debian icinga-stretch main\n" >> \
-    /etc/apt/sources.list.d/icinga2.list
-RUN printf "deb http://deb.debian.org/debian stretch-backports main\n" > \
-    /etc/apt/sources.list.d/stretch-backports.list
 RUN apt-get update && apt-get upgrade -y
-RUN apt-get install -y locales icingacli icingaweb2 git-core 
-RUN apt-get clean autoclean && apt-get autoremove -y && \
-    rm -rf /var/lib/{apt-get,dpkg,cache,log}/
-RUN sed -i 's/# pt_BR.UTF-8 UTF-8/pt_BR.UTF-8 UTF-8/' /etc/locale.gen
+RUN apt-get install -y --no-install-recommends zlib1g-dev libicu-dev g++ \
+    libldap2-dev libmagickwand-dev git-core locales libssl-dev gettext \
+    libpq-dev && apt-get clean autoclean && apt-get autoremove -y && \
+    rm -rf /var/lib/{apt,dpkg,cache,log}/
+RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+RUN echo "pt_BR.UTF-8 UTF-8" >> /etc/locale.gen
 RUN locale-gen
-RUN curl -O /v1.6.2.tar.gz https://github.com/Icinga/icingaweb2-module-director/archive/v1.6.2.tar.gz
-RUN mkdir /usr/share/icingaweb2/modules/director
-RUN tar xf /v1.6.2.tar.gz -C /usr/share/icingaweb2/modules/director && rm /v1.6.2.tar.gz
-RUN cp /usr/share/icingaweb2/packages/files/apache/icingaweb2.conf /etc/apache2/conf-enabled/ && \
-    echo "RedirectMatch ^/$ /icingaweb2" >> /etc/apache2/conf-enabled/redirect.conf && \
-    a2enmod rewrite && echo "date.timezone = America\Sao_Paulo" > /usr/local/etc/php/conf.d/timeszone.ini
-RUN icingacli module enable monitoring
-RUN icingacli module enable graphite
-RUN icingacli module enable director
+RUN docker-php-ext-install pdo_pgsql
+RUN docker-php-ext-install gettext
+RUN docker-php-ext-install intl
+RUN docker-php-ext-install ldap
+RUN docker-php-ext-install json
+RUN docker-php-ext-install pdo_mysql
+RUN pecl install imagick htmlpurifier
+RUN a2enmod rewrite
+RUN git clone https://github.com/Icinga/icingaweb2.git /usr/share/icingaweb2
+RUN git clone https://github.com/Icinga/icingaweb2-module-director.git \
+    /usr/share/icingaweb2/modules/director
+RUN addgroup --system icingaweb2 && usermod -a -G icingaweb2 www-data
+RUN /usr/share/icingaweb2/bin/icingacli setup config webserver apache \
+    --document-root /usr/share/icingaweb2/public
+RUN /usr/share/icingaweb2/bin/icingacli setup config directory
+RUN /usr/share/icingaweb2/bin/icingacli module enable director
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod 755 /entrypoint.sh
 ENTRYPOINT [ "/entrypoint.sh" ]
