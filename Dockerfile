@@ -1,5 +1,5 @@
 FROM php:7.3-apache-stretch
-RUN apt-get update && apt-get-get install -y curl apt-get-transport-https gnupg
+RUN apt-get update && apt-get install -y curl apt-get-transport-https gnupg
 RUN curl https://packages.icinga.com/icinga.key | apt-get-key add -
 RUN printf "deb http://packages.icinga.com/debian icinga-stretch main\n" > \
     /etc/apt-get/sources.list.d/icinga2.list
@@ -9,7 +9,7 @@ RUN printf "deb http://deb.debian.org/debian stretch-backports main\n" > \
     /etc/apt-get/sources.list.d/stretch-backports.list
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y locales icingacli icingaweb2 git-core 
-RUN apt-get-get clean autoclean && apt-get-get autoremove -y && \
+RUN apt-get clean autoclean && apt-get autoremove -y && \
     rm -rf /var/lib/{apt-get,dpkg,cache,log}/
 RUN sed -i 's/# pt_BR.UTF-8 UTF-8/pt_BR.UTF-8 UTF-8/' /etc/locale.gen
 RUN locale-gen
