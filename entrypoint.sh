@@ -28,10 +28,10 @@ password            = \"${MYSQL_PASSWORD}\"\n" > /etc/icingaweb2/resources.ini
 	    sleep 30
             mysql -uroot -p${MYSQL_ROOT_PASSWORD} -h${MYSQL_HOST} -e "CREATE DATABASE ${MYSQL_DATABASE}"
             mysql -uroot -p${MYSQL_ROOT_PASSWORD} -h${MYSQL_HOST} -e "CREATE DATABASE ${MYSQL_DIRECTOR_DATABASE} CHARACTER SET 'utf8'"
-            mysql -uroot -p${MYSQL_ROOT_PASSWORD} -h${MYSQL_HOST} -e "GRANT ALL ON ${MYSQL_DATABASE}.* TO ${MYSQL_USERNAME} IDENTIFIED BY \"${MYSQL_PASSWORD}\""
-            mysql -uroot -p${MYSQL_ROOT_PASSWORD} -h${MYSQL_HOST} -e "GRANT ALL ON ${MYSQL_DIRECTOR_DATABASE}.* TO ${MYSQL_USERNAME}"
+            mysql -uroot -p${MYSQL_ROOT_PASSWORD} -h${MYSQL_HOST} -e "GRANT ALL ON ${MYSQL_DATABASE}.* TO ${MYSQL_USERNAME}.% IDENTIFIED BY \"${MYSQL_PASSWORD}\""
+            mysql -uroot -p${MYSQL_ROOT_PASSWORD} -h${MYSQL_HOST} -e "GRANT ALL ON ${MYSQL_DIRECTOR_DATABASE}.* TO ${MYSQL_USERNAME}.%"
             mysql -uroot -p${MYSQL_ROOT_PASSWORD} -h${MYSQL_HOST} ${MYSQL_DATABASE} < /usr/share/icingaweb2/etc/schema/mysql.schema.sql
-            mysql -uroot -p${MYSQL_ROOT_PASSWORD} -h${MYSQL_HOST} ${MYSQL_DATABASE} -e "INSERT INTO icingaweb_user (name, active, password_hash) VALUES ('icingaadmin', 1, '$1$EzxLOFDr$giVx3bGhVm4lDUAw6srGX1')"
+            mysql -uroot -p${MYSQL_ROOT_PASSWORD} -h${MYSQL_HOST} ${MYSQL_DATABASE} -e "INSERT INTO icingaweb_user (name, active, password_hash) VALUES ('icingaadmin', 1, '$2y$10$DYCGIiM9LrNtje3NS0jjm.6iIDwvbk6/GTaY/SIEdLsNeH4/G8lh.')"
 	    touch /var/mysql-provisioned
         fi
     fi 
@@ -59,8 +59,8 @@ fi
 
 if [ ! -f /etc/icingaweb2/config.ini ]; then
     printf "[logging]
-log                 = \"syslog\"
-level               = \"ERROR\"
+log                 = \"file\"
+level               = \"DEBUG\"
 application         = \"icingaweb2\"
 [preferences]
 type                = \"db\"
