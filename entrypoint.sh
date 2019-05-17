@@ -21,7 +21,15 @@ type                = \"db\"
 db                  = \"mysql\"
 host                = \"${MYSQL_HOST}\"
 port                = \"${MYSQL_PORT}\"
-dbname              = \"${MYSQL_DATABASE}\"
+dbname              = \"${MYSQL_ICINGA2_DATABASE}\"
+username            = \"${MYSQL_USERNAME}\"
+password            = \"${MYSQL_PASSWORD}\"
+[director]
+type                = \"db\"
+db                  = \"mysql\"
+host                = \"${MYSQL_HOST}\"
+port                = \"${MYSQL_PORT}\"
+dbname              = \"${MYSQL_DIRECTOR_DATABASE}\"
 username            = \"${MYSQL_USERNAME}\"
 password            = \"${MYSQL_PASSWORD}\"\n" > /etc/icingaweb2/resources.ini
         if [ ! -f /var/mysql-provisioned ]; then
@@ -31,7 +39,7 @@ password            = \"${MYSQL_PASSWORD}\"\n" > /etc/icingaweb2/resources.ini
             mysql -uroot -p${MYSQL_ROOT_PASSWORD} -h${MYSQL_HOST} -e "GRANT ALL ON ${MYSQL_DATABASE}.* TO \"${MYSQL_USERNAME}\"@\"%\" IDENTIFIED BY \"${MYSQL_PASSWORD}\""
             mysql -uroot -p${MYSQL_ROOT_PASSWORD} -h${MYSQL_HOST} -e "GRANT ALL ON ${MYSQL_DIRECTOR_DATABASE}.* TO \"${MYSQL_USERNAME}\"@\"%\""
             mysql -uroot -p${MYSQL_ROOT_PASSWORD} -h${MYSQL_HOST} ${MYSQL_DATABASE} < /usr/share/icingaweb2/etc/schema/mysql.schema.sql
-            mysql -uroot -p${MYSQL_ROOT_PASSWORD} -h${MYSQL_HOST} ${MYSQL_DATABASE} -e "INSERT INTO icingaweb_user (name, active, password_hash) VALUES ('icingaadmin', 1, '$2y$10$DYCGIiM9LrNtje3NS0jjm.6iIDwvbk6/GTaY/SIEdLsNeH4/G8lh.')"
+            mysql -uroot -p${MYSQL_ROOT_PASSWORD} -h${MYSQL_HOST} ${MYSQL_DATABASE} -e "INSERT INTO icingaweb_user (name, active, password_hash) VALUES ('icingaadmin', 1, '\$2y\$10\$bEKU6.1bRYjE7wxktqfeO.IGV9pYAkDBeXEbjMFSNs26lKTI0JQ1q')"
 	    touch /var/mysql-provisioned
         fi
     fi 
@@ -47,10 +55,18 @@ username            = \"${PGSQL_USERNAME}\"
 password            = \"${PGSQL_PASSWORD}\"
 [icinga2]
 type                = \"db\"
+db                  = \"mysql\"
+host                = \"${PGSQL_HOST}\"
+port                = \"${PGSQL_PORT}\"
+dbname              = \"${PGSQL_ICINGA2_DATABASE}\"
+username            = \"${PGSQL_USERNAME}\"
+password            = \"${PGSQL_PASSWORD}\"
+[director]
+type                = \"db\"
 db                  = \"pgsql\"
 host                = \"${PGSQL_HOST}\"
 port                = \"${PGSQL_PORT}\"
-dbname              = \"${PGSQL_DATABASE}\"
+dbname              = \"${PGSQL_DIRECTOR_DATABASE}\"
 username            = \"${PGSQL_USERNAME}\"
 password            = \"${PGSQL_PASSWORD}\"\n" > /etc/icingaweb2/resources.ini
     fi
