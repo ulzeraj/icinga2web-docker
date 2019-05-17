@@ -3,7 +3,7 @@ export PATH=${PATH}:/usr/share/icingaweb2/bin
 
 set -ex
 
-mkdir -p /etc/icingaweb2/modules
+mkdir -p /etc/icingaweb2/modules/monitoring
 
 if [ ! -f /etc/icingaweb2/resources.ini ]; then
     if [ "$DATABASE_ENGINE" == "mysql" ]; then 
