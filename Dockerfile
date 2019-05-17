@@ -2,11 +2,11 @@ FROM php:7.3-apache-stretch
 RUN apt-get update && apt-get install -y curl apt-transport-https gnupg
 RUN curl https://packages.icinga.com/icinga.key | apt-key add -
 RUN printf "deb http://packages.icinga.com/debian icinga-stretch main\n" > \
-    /etc/apt-get/sources.list.d/icinga2.list
+    /etc/apt/sources.list.d/icinga2.list
 RUN printf "deb-src http://packages.icinga.com/debian icinga-stretch main\n" >> \
-    /etc/apt-get/sources.list.d/icinga2.list
+    /etc/apt/sources.list.d/icinga2.list
 RUN printf "deb http://deb.debian.org/debian stretch-backports main\n" > \
-    /etc/apt-get/sources.list.d/stretch-backports.list
+    /etc/apt/sources.list.d/stretch-backports.list
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y locales icingacli icingaweb2 git-core 
 RUN apt-get clean autoclean && apt-get autoremove -y && \
