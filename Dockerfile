@@ -1,4 +1,3 @@
-#Based on https://github.com/mimacom/docker-icingaweb2/
 FROM php:7.3-apache-stretch
 RUN apt update && apt-get install -y curl apt-transport-https gnupg
 RUN curl https://packages.icinga.com/icinga.key | apt-key add -
