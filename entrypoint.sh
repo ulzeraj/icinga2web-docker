@@ -39,7 +39,7 @@ password            = \"${MYSQL_PASSWORD}\"\n" > /etc/icingaweb2/resources.ini
             mysql -uroot -p${MYSQL_ROOT_PASSWORD} -h${MYSQL_HOST} -e "GRANT ALL ON ${MYSQL_DATABASE}.* TO \"${MYSQL_USERNAME}\"@\"%\" IDENTIFIED BY \"${MYSQL_PASSWORD}\""
             mysql -uroot -p${MYSQL_ROOT_PASSWORD} -h${MYSQL_HOST} -e "GRANT ALL ON ${MYSQL_DIRECTOR_DATABASE}.* TO \"${MYSQL_USERNAME}\"@\"%\""
             mysql -uroot -p${MYSQL_ROOT_PASSWORD} -h${MYSQL_HOST} ${MYSQL_DATABASE} < /usr/share/icingaweb2/etc/schema/mysql.schema.sql
-            mysql -uroot -p${MYSQL_ROOT_PASSWORD} -h${MYSQL_HOST} ${MYSQL_DATABASE} -e "INSERT INTO icingaweb_user (name, active, password_hash) VALUES ('icingaadmin', 1, '\$2y\$10\$bEKU6.1bRYjE7wxktqfeO.IGV9pYAkDBeXEbjMFSNs26lKTI0JQ1q')"
+            mysql -uroot -p${MYSQL_ROOT_PASSWORD} -h${MYSQL_HOST} ${MYSQL_DATABASE} -e "INSERT INTO icingaweb_user (name, active, password_hash) VALUES ('icingaadmin', 1, '\$2y\$10\$38ZBhQhv2reiAyKKxpBNEeDEOdP960EZkjzonQIxmIQ3DCrOC0ytG')"
 	    touch /var/mysql-provisioned
         fi
     fi 
