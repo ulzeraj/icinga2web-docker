@@ -3,8 +3,8 @@ EXPOSE 80
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y --no-install-recommends zlib1g-dev libicu-dev g++ \
     libldap2-dev libmagickwand-dev git-core locales libssl-dev gettext \
-    libpq-dev && apt-get clean autoclean && apt-get autoremove -y && \
-    rm -rf /var/lib/{apt,dpkg,cache,log}/
+    libpq-dev mysql-client postgresql-client && apt-get clean autoclean && \
+    apt-get autoremove -y && rm -rf /var/lib/{apt,dpkg,cache,log}/
 RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 RUN echo "pt_BR.UTF-8 UTF-8" >> /etc/locale.gen
 RUN locale-gen

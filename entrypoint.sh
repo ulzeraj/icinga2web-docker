@@ -24,6 +24,13 @@ port                = \"${MYSQL_PORT}\"
 dbname              = \"${MYSQL_DATABASE}\"
 username            = \"${MYSQL_USERNAME}\"
 password            = \"${MYSQL_PASSWORD}\"\n" > /etc/icingaweb2/resources.ini
+        if [ ! -f /var/mysql-provisioned ]; then
+            mysql -uroot -p${MYSQL_ROOT_PASSWORD} -h${MYSQL_HOST} -e "CREATE DATABASE ${MYSQL_DATABASE}"
+            mysql -uroot -p${MYSQL_ROOT_PASSWORD} -h${MYSQL_HOST} -e "GRANT ALL ON ${MYSQL_DATABASE}.* TO ${MYSQL_USERNAME} IDENTIFIED BY \"${MYSQL_PASSWORD}\""
+            mysql -uroot -p${MYSQL_ROOT_PASSWORD} -h${MYSQL_HOST} < /usr/share/doc/icingaweb2/schema/mysql.schema.sql
+            mysql -uroot -p${MYSQL_ROOT_PASSWORD} -h${MYSQL_HOST} -e "INSERT INTO icingaweb_user (name, active, password_hash) VALUES ('icingaadmin', 1, '$1$EzxLOFDr$giVx3bGhVm4lDUAw6srGX1')"
+	    touch /var/mysql-provisioned
+        fi
     fi 
     if [ "$DATABASE_ENGINE" == "pgsql" ]; then 
     printf "
