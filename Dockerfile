@@ -21,7 +21,8 @@ RUN git clone https://github.com/Icinga/icingaweb2-module-director.git \
     /usr/share/icingaweb2/modules/director
 RUN addgroup --system icingaweb2 && usermod -a -G icingaweb2 www-data
 RUN /usr/share/icingaweb2/bin/icingacli setup config webserver apache \
-    --document-root /usr/share/icingaweb2/public
+    --document-root /usr/share/icingaweb2/public > \
+    /etc/apache2/sites-enabled/icinga2.conf
 RUN /usr/share/icingaweb2/bin/icingacli setup config directory
 RUN /usr/share/icingaweb2/bin/icingacli module enable director
 COPY entrypoint.sh /entrypoint.sh
