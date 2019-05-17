@@ -1,4 +1,5 @@
 FROM php:7.3-apache-stretch
+EXPOSE 80
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y --no-install-recommends zlib1g-dev libicu-dev g++ \
     libldap2-dev libmagickwand-dev git-core locales libssl-dev gettext \
